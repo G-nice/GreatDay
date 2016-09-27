@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:background="@color/background"
+    android:layout_height="30pt">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0pt"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_weekday_frame"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/week_day"
+            android:layout_width="match_parent"
+            android:layout_height="10pt"
+            android:gravity="center"
+            android:fontFamily="monospace"
+            android:textSize="6pt"
+            android:text="SUN"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="20pt"
+            android:gravity="center"
+            android:background="@drawable/item_date_frame"
+            android:textSize="10pt"
+            android:text="26"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0pt"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/item_content_preview_frame"
+        android:layout_weight="7">
+
+        <TextView
+            android:id="@+id/content_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:maxLines="2"
+            android:textSize="8pt"
+            android:text="**sibhbbdbdfm\nfdvdfvfdvdfhmhmhmhmhioerbe"/>
+
+    </LinearLayout>
+
+</LinearLayout>

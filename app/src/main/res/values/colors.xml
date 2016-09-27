@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="background">#f2f1ed</color>
+    <color name="item_frame">#1b1b1b</color>
+    <color name="sunday_red">#a03f3f</color>
+    <color name="black">#393939</color>
+    <color name="toolbarTextColor">#252525</color>
+    <color name="text_seleted">#252525</color>
+    <color name="text_unseleted">#838383</color>
+    <color name="show_frame">#6A0400FF</color>
+
+    <!--<color name="background">#fff2f1ed</color>-->
+</resources>

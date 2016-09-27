@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">GreatDay</string>
+    <string name="app_description">Notedown your everyday</string>
+
+
+
+
+    <item
+        name="tag_empty"
+        type="id">
+    </item>
+    <item
+        name="tag_filled"
+        type="id">
+    </item>
+    <item
+        name="january"
+        type="id">
+    </item>
+    <item
+        name="february"
+        type="id">
+    </item>
+    <item
+        name="march"
+        type="id">
+    </item>
+    <item
+        name="april"
+        type="id">
+    </item>
+    <item
+        name="may"
+        type="id">
+    </item>
+    <item
+        name="june"
+        type="id">
+    </item>
+    <item
+        name="july"
+        type="id">
+    </item>
+    <item
+        name="august"
+        type="id">
+    </item>
+    <item
+        name="september"
+        type="id">
+    </item>
+    <item
+        name="october"
+        type="id">
+    </item>
+    <item
+        name="november"
+        type="id">
+    </item>
+    <item
+        name="december"
+        type="id">
+    </item>
+</resources>
