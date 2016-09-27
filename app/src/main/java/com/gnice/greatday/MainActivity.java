@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 
 
     // 纯数据  从数据库读取  非空 一个月数据
-//    private static HashMap<String, String> storedItems = new HashMap<>();
+    //    private static HashMap<String, String> storedItems = new HashMap<>();
     // 为itemAdapter提供一个月的数据  含有空DiaryItem
     public static ArrayList<DiaryItem> listItems = new ArrayList<>();
 
@@ -110,10 +110,10 @@ public class MainActivity extends Activity {
 
                 Log.i("listItems size", "" + listItems.size());
                 intent.putExtra("date", String.valueOf(position + 1));
-//                if (showStyle == LIST_STYLE_BOX)
-//                    intent.putExtra("date", String.valueOf(position + 1));
-//                else
-//                    intent.putExtra("date", String.valueOf(listItems.get(position).getDate()));
+                //                if (showStyle == LIST_STYLE_BOX)
+                //                    intent.putExtra("date", String.valueOf(position + 1));
+                //                else
+                //                    intent.putExtra("date", String.valueOf(listItems.get(position).getDate()));
 
                 startActivity(intent);
             }
@@ -129,7 +129,12 @@ public class MainActivity extends Activity {
                 monthChooser.setMonthChooseListener(new MonthChooser.OnMonthChooseListener() {
                     public void monthSelected(int month) {
                         monthIndex = month;
-                        loadListData(year, monthIndex);
+                        if (showStyle == LIST_STYLE_STORY) {
+                            loadListDataStory(year, monthIndex);
+                        } else if (showStyle == LIST_STYLE_BOX) {
+                            loadListData(year, monthIndex);
+                        }
+                        //                        loadListData(year, monthIndex);
 
                         //                        itemAdapter.notifyDataSetChanged(year, monthIndex);
                         selectMonth.setText(Constant.monthString[monthIndex]);
@@ -180,8 +185,12 @@ public class MainActivity extends Activity {
                         if (yearGet == Constant.getCurrentYear()) {
                             monthIndex = Constant.getCurrentMonthIndex();
                         }
-
-                        loadListData(year, monthIndex);
+                        if (showStyle == LIST_STYLE_STORY) {
+                            loadListDataStory(year, monthIndex);
+                        } else if (showStyle == LIST_STYLE_BOX) {
+                            loadListData(year, monthIndex);
+                        }
+                        //                        loadListData(year, monthIndex);
                         //                        itemAdapter.notifyDataSetChanged(year, monthIndex);
                         selectYear.setText(String.valueOf(yearGet));
 
@@ -221,6 +230,12 @@ public class MainActivity extends Activity {
                 if (monthIndex != (int) cal.get(Calendar.MONTH) || year != (int) cal.get(Calendar.YEAR)) {
                     monthIndex = cal.get(Calendar.MONTH);
                     year = cal.get(Calendar.YEAR);
+
+                    if (showStyle == LIST_STYLE_STORY) {
+                        loadListDataStory(year, monthIndex);
+                    } else if (showStyle == LIST_STYLE_BOX) {
+                        loadListData(year, monthIndex);
+                    }
                     //                    loadListData(year, monthIndex);
                     //                    diaryList.deferNotifyDataSetChanged();
                     selectMonth.setText(Constant.monthString[monthIndex]);
@@ -231,7 +246,23 @@ public class MainActivity extends Activity {
                 //                Log.i("add today", "" + month);
 
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                intent.putExtra("date", String.valueOf(cal.get(Calendar.DATE)));
+                if (showStyle == LIST_STYLE_STORY) {
+                    int index = 0;
+
+                    String str = simpleDateFormat.format(cal.getTime());
+                    Log.i("datestr", str);
+                    for (DiaryItem di : listItems) {
+                        if (di.getDateFullStr().equals(str)) {
+                            break;
+                        }
+                        index++;
+                    }
+                    intent.putExtra("date", String.valueOf(index + 1));
+                }
+                else if (showStyle == LIST_STYLE_BOX) {
+                    intent.putExtra("date", String.valueOf(cal.get(Calendar.DATE)));
+                }
+
                 startActivity(intent);
             }
         });
@@ -241,15 +272,14 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.i("Change View", "Change View");
-//                diaryList.removeAllViews();
+                //                diaryList.removeAllViews();
 
                 if (showStyle == LIST_STYLE_BOX) {
                     loadListDataStory(year, monthIndex);
                     diaryList.setAdapter(itemAdapterStory);
                     itemAdapterStory.notifyDataSetChanged(year, monthIndex);
                     showStyle = LIST_STYLE_STORY;
-                }
-                else if (showStyle == LIST_STYLE_STORY) {
+                } else if (showStyle == LIST_STYLE_STORY) {
                     loadListData(year, monthIndex);
                     diaryList.setAdapter(itemAdapter);
                     itemAdapter.notifyDataSetChanged(year, monthIndex);
@@ -273,13 +303,12 @@ public class MainActivity extends Activity {
     protected void onResume() {
         if (showStyle == LIST_STYLE_STORY) {
             loadListDataStory(year, monthIndex);
-//            itemAdapterStory.notifyDataSetChanged(year, monthIndex);
-        }
-        else if (showStyle == LIST_STYLE_BOX) {
+            //            itemAdapterStory.notifyDataSetChanged(year, monthIndex);
+        } else if (showStyle == LIST_STYLE_BOX) {
             loadListData(year, monthIndex);
-//            itemAdapter.notifyDataSetChanged(year, monthIndex);
+            //            itemAdapter.notifyDataSetChanged(year, monthIndex);
         }
-//        itemAdapter.notifyDataSetChanged(year, monthIndex);
+        //        itemAdapter.notifyDataSetChanged(year, monthIndex);
         //        Log.i("onResume", "Resume");
         super.onResume();
     }
@@ -300,10 +329,10 @@ public class MainActivity extends Activity {
     //
     //    }
 
-//
+    //
 
 
-//
+    //
 
 
     private void init_data(int year, int monthIndex) {
@@ -380,14 +409,14 @@ public class MainActivity extends Activity {
             } while (cursor.moveToNext());
 
         }
-//        itemAdapter.notifyDataSetChanged(cal);
+        //        itemAdapter.notifyDataSetChanged(cal);
         itemAdapter.notifyDataSetChanged(year, monthIndex);
-//        if (showStyle == LIST_STYLE_STORY) {
-//            itemAdapterStory.notifyDataSetChanged(year, monthIndex);
-//        }
-//        else if (showStyle == LIST_STYLE_BOX) {
-//            itemAdapter.notifyDataSetChanged(year, monthIndex);
-//        }
+        //        if (showStyle == LIST_STYLE_STORY) {
+        //            itemAdapterStory.notifyDataSetChanged(year, monthIndex);
+        //        }
+        //        else if (showStyle == LIST_STYLE_BOX) {
+        //            itemAdapter.notifyDataSetChanged(year, monthIndex);
+        //        }
     }
 
     private void loadListDataStory(int year, int monthIndex) {
@@ -407,12 +436,12 @@ public class MainActivity extends Activity {
         }
         //        itemAdapter.notifyDataSetChanged(cal);
         itemAdapterStory.notifyDataSetChanged(year, monthIndex);
-//        if (showStyle == LIST_STYLE_STORY) {
-//            itemAdapterStory.notifyDataSetChanged(year, monthIndex);
-//        }
-//        else if (showStyle == LIST_STYLE_BOX) {
-//            itemAdapter.notifyDataSetChanged(year, monthIndex);
-//        }
+        //        if (showStyle == LIST_STYLE_STORY) {
+        //            itemAdapterStory.notifyDataSetChanged(year, monthIndex);
+        //        }
+        //        else if (showStyle == LIST_STYLE_BOX) {
+        //            itemAdapter.notifyDataSetChanged(year, monthIndex);
+        //        }
     }
 
     private void showParentCover() {
@@ -483,103 +512,103 @@ public class MainActivity extends Activity {
 //        }
 
 //    private void init_data2() {
-        //        Calendar cal = Calendar.getInstance();
-        //        cal.setTime(new Date());
-        //
-        //        monthIndex = cal.get(Calendar.MONTH);
-        //        year = cal.get(Calendar.YEAR);
-        //        //        month = monthIndex +1;
-        //
-        //        cal.set(Calendar.DAY_OF_MONTH, 1);
-        //        Random random = new Random();
-        //        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        //        //        Log.i("maxday", ""+maxday);
-        //
-        //        if (!listItems.isEmpty()) {
-        //            listItems.clear();
-        //        }
-        //        if (!storedItems.isEmpty()) {
-        //            storedItems.clear();
-        //        }
-        //
-        //
-        //        // 构造从数据库读出的数据
-        //        for (int i = 1; i <= maxday; i++) {
-        //            if (random.nextBoolean()) {
-        //                storedItems.put(simpleDateFormat.format(cal.getTime()), String.valueOf(i * 101));
-        //                //                Log.i("DATE STR", simpleDateFormat.format((cal.getTime())));
-        //            }
-        //            cal.add(Calendar.DATE, 1);
-        //        }
-        //
-        //        cal.set(Calendar.MONTH, monthIndex);  // 前面的add将cal加到了10月
-        //        cal.set(Calendar.DAY_OF_MONTH, 1);
-        //        for (int i = 1; i <= maxday; i++) {
-        //            DiaryItem diaryItem = new DiaryItem(cal);
-        //            listItems.add(diaryItem);
-        //            cal.add(Calendar.DATE, 1);
-        //        }
-        //
-        //        Calendar caltmp = Calendar.getInstance();
-        //        Iterator<Map.Entry<String, String>> iter = storedItems.entrySet().iterator();
-        //        while (iter.hasNext()) {
-        //            Map.Entry<String, String> entry = iter.next();
-        //
-        //            try {
-        //                Date date = simpleDateFormat.parse(entry.getKey());
-        //                caltmp.setTime(date);
-        //            } catch (ParseException pe) {
-        //                Log.e("Parse date", pe.getMessage());
-        //            }
-        //
-        //            listItems.get(caltmp.get(Calendar.DAY_OF_MONTH) - 1).setContent(entry.getValue());
-        //        }
-        //    }
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(new Date());
+//
+//        monthIndex = cal.get(Calendar.MONTH);
+//        year = cal.get(Calendar.YEAR);
+//        //        month = monthIndex +1;
+//
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//        Random random = new Random();
+//        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+//        //        Log.i("maxday", ""+maxday);
+//
+//        if (!listItems.isEmpty()) {
+//            listItems.clear();
+//        }
+//        if (!storedItems.isEmpty()) {
+//            storedItems.clear();
+//        }
+//
+//
+//        // 构造从数据库读出的数据
+//        for (int i = 1; i <= maxday; i++) {
+//            if (random.nextBoolean()) {
+//                storedItems.put(simpleDateFormat.format(cal.getTime()), String.valueOf(i * 101));
+//                //                Log.i("DATE STR", simpleDateFormat.format((cal.getTime())));
+//            }
+//            cal.add(Calendar.DATE, 1);
+//        }
+//
+//        cal.set(Calendar.MONTH, monthIndex);  // 前面的add将cal加到了10月
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//        for (int i = 1; i <= maxday; i++) {
+//            DiaryItem diaryItem = new DiaryItem(cal);
+//            listItems.add(diaryItem);
+//            cal.add(Calendar.DATE, 1);
+//        }
+//
+//        Calendar caltmp = Calendar.getInstance();
+//        Iterator<Map.Entry<String, String>> iter = storedItems.entrySet().iterator();
+//        while (iter.hasNext()) {
+//            Map.Entry<String, String> entry = iter.next();
+//
+//            try {
+//                Date date = simpleDateFormat.parse(entry.getKey());
+//                caltmp.setTime(date);
+//            } catch (ParseException pe) {
+//                Log.e("Parse date", pe.getMessage());
+//            }
+//
+//            listItems.get(caltmp.get(Calendar.DAY_OF_MONTH) - 1).setContent(entry.getValue());
+//        }
+//    }
 
 //        private void loadListData2(int year, int month) {
-            //        Calendar cal = Calendar.getInstance();
-            //        cal.set(Calendar.YEAR, year);
-            //        cal.set(Calendar.MONTH, month);
-            //
-            //
-            //        if (!listItems.isEmpty()) {
-            //            listItems.clear();
-            //        }
-            //        if (!storedItems.isEmpty()) {
-            //            storedItems.clear();
-            //        }
-            //
-            //        cal.set(Calendar.DAY_OF_MONTH, 1);
-            //        Random random = new Random();
-            //        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-            //        // 模拟构造从数据库读出的数据
-            //        for (int i = 1; i <= maxday; i++) {
-            //            if (random.nextBoolean()) {
-            //                storedItems.put(simpleDateFormat.format(cal.getTime()), String.valueOf(i * 101));
-            //            }
-            //            cal.add(Calendar.DATE, 1);
-            //        }
-            //
-            //        cal.set(Calendar.MONTH, monthIndex);  // 前面的add将cal加到了下个月
-            //        cal.set(Calendar.DAY_OF_MONTH, 1);
-            //        for (int i = 1; i <= maxday; i++) {
-            //            DiaryItem diaryItem = new DiaryItem(cal);
-            //            listItems.add(diaryItem);
-            //            cal.add(Calendar.DATE, 1);
-            //        }
-            //
-            //        Calendar caltmp = Calendar.getInstance();
-            //        Iterator<Map.Entry<String, String>> iter = storedItems.entrySet().iterator();
-            //        while (iter.hasNext()) {
-            //            Map.Entry<String, String> entry = iter.next();
-            //
-            //            try {
-            //                Date date = simpleDateFormat.parse(entry.getKey());
-            //                caltmp.setTime(date);
-            //            } catch (ParseException pe) {
-            //                Log.e("Parse date", pe.getMessage());
-            //            }
-            //            listItems.get(caltmp.get(Calendar.DAY_OF_MONTH) - 1).setContent(entry.getValue());
-            //        }
-            //        itemAdapter.notifyDataSetChanged(cal);
-            //    }
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.YEAR, year);
+//        cal.set(Calendar.MONTH, month);
+//
+//
+//        if (!listItems.isEmpty()) {
+//            listItems.clear();
+//        }
+//        if (!storedItems.isEmpty()) {
+//            storedItems.clear();
+//        }
+//
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//        Random random = new Random();
+//        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+//        // 模拟构造从数据库读出的数据
+//        for (int i = 1; i <= maxday; i++) {
+//            if (random.nextBoolean()) {
+//                storedItems.put(simpleDateFormat.format(cal.getTime()), String.valueOf(i * 101));
+//            }
+//            cal.add(Calendar.DATE, 1);
+//        }
+//
+//        cal.set(Calendar.MONTH, monthIndex);  // 前面的add将cal加到了下个月
+//        cal.set(Calendar.DAY_OF_MONTH, 1);
+//        for (int i = 1; i <= maxday; i++) {
+//            DiaryItem diaryItem = new DiaryItem(cal);
+//            listItems.add(diaryItem);
+//            cal.add(Calendar.DATE, 1);
+//        }
+//
+//        Calendar caltmp = Calendar.getInstance();
+//        Iterator<Map.Entry<String, String>> iter = storedItems.entrySet().iterator();
+//        while (iter.hasNext()) {
+//            Map.Entry<String, String> entry = iter.next();
+//
+//            try {
+//                Date date = simpleDateFormat.parse(entry.getKey());
+//                caltmp.setTime(date);
+//            } catch (ParseException pe) {
+//                Log.e("Parse date", pe.getMessage());
+//            }
+//            listItems.get(caltmp.get(Calendar.DAY_OF_MONTH) - 1).setContent(entry.getValue());
+//        }
+//        itemAdapter.notifyDataSetChanged(cal);
+//    }
