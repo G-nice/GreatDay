@@ -1,9 +1,9 @@
 package com.gnice.greatday;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.gnice.greatday.util.AndroidBug5497Workaround;
 import com.gnice.greatday.util.DiaryItem;
 
 import java.text.ParseException;
@@ -19,7 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class EditorActivity extends Activity {
+public class EditorActivity extends AppCompatActivity {
 
     private final String[] weekdays = {"--", "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
     private final String[] monthString = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -45,6 +46,8 @@ public class EditorActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor);
+        AndroidBug5497Workaround.assistActivity(this);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         editor = (EditText) findViewById(R.id.editor_edittext);
         weekday_title = (TextView) findViewById(R.id.weekday_title);

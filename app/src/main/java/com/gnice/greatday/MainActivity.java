@@ -1,9 +1,9 @@
 package com.gnice.greatday;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     public static DatabaseManager databaseManager;
 
@@ -257,9 +257,14 @@ public class MainActivity extends Activity {
                         }
                         index++;
                     }
-                    intent.putExtra("date", String.valueOf(index + 1));
-                }
-                else if (showStyle == LIST_STYLE_BOX) {
+                    if (index < listItems.size()) {
+                        intent.putExtra("date", String.valueOf(index + 1));
+                    } else {
+                        DiaryItem diaryItem = new DiaryItem(cal);
+                        listItems.add(diaryItem);
+                        intent.putExtra("date", String.valueOf(index + 1));
+                    }
+                } else if (showStyle == LIST_STYLE_BOX) {
                     intent.putExtra("date", String.valueOf(cal.get(Calendar.DATE)));
                 }
 
@@ -349,7 +354,8 @@ public class MainActivity extends Activity {
         cal.set(Calendar.MONTH, monthIndex);
 
         cal.set(Calendar.DAY_OF_MONTH, 1);
-        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+//        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int maxday = cal.get(Calendar.DAY_OF_MONTH);
         for (int i = 1; i <= maxday; i++) {
             DiaryItem diaryItem = new DiaryItem(cal);
             listItems.add(diaryItem);
@@ -388,7 +394,12 @@ public class MainActivity extends Activity {
         cal.set(Calendar.MONTH, monthIndex);
 
         cal.set(Calendar.DAY_OF_MONTH, 1);
-        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int maxday = 0;
+        if (monthIndex == Constant.getCurrentMonthIndex() && year == Constant.getCurrentYear())
+            maxday = cal.get(Calendar.DAY_OF_MONTH);
+        else
+            maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         for (int i = 1; i <= maxday; i++) {
             DiaryItem diaryItem = new DiaryItem(cal);
             listItems.add(diaryItem);
