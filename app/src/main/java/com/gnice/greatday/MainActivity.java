@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button selectYear;
     private Button selectMonth;
-    private ImageButton addoday;
+    private ImageButton addToday;
     private ImageButton toggleListStyle;
     private MonthChooser monthChooser;
     private YearChooser yearChooser;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         first_page = (RelativeLayout) findViewById(R.id.first_page);
         selectMonth = (Button) findViewById(R.id.choose_month);
         selectYear = (Button) findViewById(R.id.choose_yrar);
-        addoday = (ImageButton) findViewById(R.id.add_today);
+        addToday = (ImageButton) findViewById(R.id.add_today);
         toggleListStyle = (ImageButton) findViewById(R.id.toggleListStyle);
 
 
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        addoday.setOnClickListener(new View.OnClickListener() {
+        addToday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar cal = Calendar.getInstance();
@@ -250,14 +250,14 @@ public class MainActivity extends AppCompatActivity {
                     int index = 0;
 
                     String str = simpleDateFormat.format(cal.getTime());
-                    Log.i("datestr", str);
+                    Log.i("date_str", str);
                     for (DiaryItem di : listItems) {
                         if (di.getDateFullStr().equals(str)) {
                             break;
                         }
                         index++;
                     }
-                    if (index < listItems.size()) {
+                    if (index <= listItems.size()) {
                         intent.putExtra("date", String.valueOf(index + 1));
                     } else {
                         DiaryItem diaryItem = new DiaryItem(cal);
@@ -353,9 +353,9 @@ public class MainActivity extends AppCompatActivity {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, monthIndex);
 
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-//        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+        //        int maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         int maxday = cal.get(Calendar.DAY_OF_MONTH);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
         for (int i = 1; i <= maxday; i++) {
             DiaryItem diaryItem = new DiaryItem(cal);
             listItems.add(diaryItem);
@@ -393,13 +393,13 @@ public class MainActivity extends AppCompatActivity {
         cal.set(Calendar.YEAR, year);
         cal.set(Calendar.MONTH, monthIndex);
 
-        cal.set(Calendar.DAY_OF_MONTH, 1);
         int maxday = 0;
         if (monthIndex == Constant.getCurrentMonthIndex() && year == Constant.getCurrentYear())
             maxday = cal.get(Calendar.DAY_OF_MONTH);
         else
             maxday = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
+        cal.set(Calendar.DAY_OF_MONTH, 1);
         for (int i = 1; i <= maxday; i++) {
             DiaryItem diaryItem = new DiaryItem(cal);
             listItems.add(diaryItem);

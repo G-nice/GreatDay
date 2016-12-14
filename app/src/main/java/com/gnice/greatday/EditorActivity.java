@@ -59,6 +59,7 @@ public class EditorActivity extends AppCompatActivity {
 
         diaryitemIndex = Integer.parseInt(intent.getStringExtra("date")) - 1;
         // 应用赋值  没有对象复制
+        Log.i("diaryitemIndex: ", "" + diaryitemIndex);
         diaryItem = MainActivity.listItems.get(diaryitemIndex);
         dateStr = String.valueOf(diaryItem.getDate());
 
@@ -94,6 +95,12 @@ public class EditorActivity extends AppCompatActivity {
             }
         });
 
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
